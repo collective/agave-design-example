@@ -8,3 +8,5 @@ Preview: https://collective.github.io/agave-design-example/
 - Page: https://collective.github.io/agave-design-example/page.html
 - Search: https://collective.github.io/agave-design-example/search.html
 - Sitemap: https://collective.github.io/agave-design-example/sitemap.html
+
+Generated with Claude Design
