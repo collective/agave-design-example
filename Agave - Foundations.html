@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agave — Foundations</title>
+<link rel="stylesheet" href="agave.css">
+<style>
+  /* ---- presentation chrome (not part of the theme) ---- */
+  body.guide{ background:#e8e9e5; }
+  .guide-wrap{ max-width:1280px; margin-inline:auto; padding:64px 28px 96px; }
+  .guide-intro{ max-width:780px; margin:0 auto 64px; }
+  .guide-kicker{ font-family:ui-monospace,Menlo,monospace; font-size:12.5px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--green-600); }
+  .guide-intro h1{ font-size:clamp(40px,5vw,60px); font-weight:800; letter-spacing:-.03em; margin:18px 0 0; }
+  .guide-intro .sub{ font-size:21px; line-height:1.5; color:var(--ink-soft); margin-top:20px; }
+  .rationale{ display:grid; grid-template-columns:repeat(2,1fr); gap:22px; margin-top:36px; }
+  .rationale .card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg);
+    padding:22px 24px; box-shadow:var(--shadow-sm); }
+  .rationale .card h3{ font-size:15px; display:flex; align-items:center; gap:9px; }
+  .rationale .card p{ font-size:15px; color:var(--ink-soft); margin-top:9px; line-height:1.55; }
+  .swatch-key{ width:14px; height:14px; border-radius:4px; flex:none; }
+
+  section.block{ margin-top:64px; }
+  .block-head{ max-width:1180px; margin:0 auto 22px; display:flex; align-items:baseline; gap:16px; }
+  .block-head .num{ font-family:ui-monospace,Menlo,monospace; font-size:13px; color:var(--green-600); }
+  .block-head h2{ font-size:24px; font-weight:700; letter-spacing:-.02em; }
+  .block-head p{ color:var(--muted); font-size:15px; margin-left:auto; max-width:440px; text-align:right; }
+
+  .card-frame{ max-width:1180px; margin-inline:auto; background:var(--surface);
+    border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow-md); overflow:hidden; }
+  .card-frame.pad{ padding:34px 36px; }
+  .frame-label{ display:flex; align-items:center; gap:10px; padding:11px 18px; background:var(--surface-2);
+    border-bottom:1px solid var(--line); font-size:12.5px; font-weight:700; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--muted); }
+  .frame-label .badge{ font-family:ui-monospace,Menlo,monospace; font-weight:600; letter-spacing:0;
+    text-transform:none; background:var(--green-50); color:var(--green-700); padding:3px 9px; border-radius:999px;
+    font-size:11.5px; }
+  .browser-dots{ display:flex; gap:6px; margin-right:4px; }
+  .browser-dots i{ width:10px; height:10px; border-radius:50%; background:var(--line-strong); display:block; }
+
+  /* palette */
+  .palette{ display:grid; grid-template-columns:repeat(4,1fr); gap:28px; }
+  .pal-group h4{ font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+  .ramp{ display:flex; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); }
+  .ramp i{ flex:1; height:54px; display:block; }
+  .pal-note{ font-size:13px; color:var(--muted); margin-top:10px; line-height:1.5; }
+  .pal-note b{ color:var(--ink); font-weight:600; }
+
+  /* type specimen */
+  .spec > * + *{ margin-top:18px; }
+  .spec .row{ display:flex; align-items:baseline; gap:18px; border-top:1px dashed var(--line); padding-top:18px; }
+  .spec .row:first-child{ border-top:0; padding-top:0; }
+  .spec .tagname{ font-family:ui-monospace,Menlo,monospace; font-size:12px; color:var(--faint);
+    width:96px; flex:none; padding-top:.4em; }
+
+  /* components grid */
+  .comp-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:30px; }
+  .comp{ }
+  .comp h4{ font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
+  .comp .demo{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+
+  .note{ max-width:1180px; margin:30px auto 0; background:var(--green-50); border:1px solid var(--green-200);
+    border-radius:var(--radius-lg); padding:22px 26px; display:flex; gap:18px; align-items:flex-start; }
+  .note .n-mark{ flex:none; width:34px; height:34px; border-radius:8px; background:var(--green-600); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-weight:800; }
+  .note h3{ font-size:16px; }
+  .note p{ font-size:15px; color:var(--ink-soft); margin-top:6px; line-height:1.55; }
+  .note ol{ margin:10px 0 0; padding-left:20px; color:var(--ink-soft); font-size:15px; line-height:1.7; }
+
+  /* show header chrome at true desktop width; scroll inside the card if narrower */
+  .chrome-scroll{ overflow-x:auto; }
+  .chrome-scroll .ah{ min-width:1040px; }
+
+  @media (max-width:760px){
+    .rationale,.palette,.comp-grid{ grid-template-columns:1fr; }
+    .block-head{ flex-direction:column; gap:6px; } .block-head p{ text-align:left; margin-left:0; }
+  }
+</style>
+</head>
+<body class="guide">
+<div class="guide-wrap">
+
+  <!-- ============ INTRO + RATIONALE ============ -->
+  <div class="guide-intro">
+    <div class="guide-kicker">Agave · a theme for Plone CMS</div>
+    <h1>A light, warm, honest theme.</h1>
+    <p class="sub">Born at a Plone gathering in Mexico, Agave keeps its origin subtle — present in an
+      agave-green palette and a warm clay accent, never in literal motifs. It's built to be a clean
+      showcase of what Plone can be, and easy to drop in, re-skin, or replace.</p>
+
+    <div class="rationale">
+      <div class="card">
+        <h3><span class="swatch-key" style="background:var(--green-500)"></span>Agave green leads</h3>
+        <p>A desaturated, slightly teal green carries the brand. Light backgrounds throughout — nothing dark
+          or heavy — so any institution's photography sits comfortably on top.</p>
+      </div>
+      <div class="card">
+        <h3><span class="swatch-key" style="background:var(--clay-500)"></span>Clay warms it up</h3>
+        <p>A single terracotta accent provides the warm Mexican counterpoint. Used sparingly: a button, a
+          link, a content-type marker — never wallpaper.</p>
+      </div>
+      <div class="card">
+        <h3><span class="swatch-key" style="background:var(--amber-500)"></span>Content gets identity</h3>
+        <p>The three core types are quietly colour-coded — <b style="color:var(--clay-700)">News</b> in clay,
+          <b style="color:var(--amber-700)">Events</b> in amber, <b style="color:var(--green-700)">Pages</b> in
+          green — so listings and pages have rhythm.</p>
+      </div>
+      <div class="card">
+        <h3><span class="swatch-key" style="background:var(--ink)"></span>Clean &amp; customisable</h3>
+        <p>Hanken Grotesk, soft 6px corners, hairline borders. Every colour, radius and size is a CSS
+          variable — re-skin the whole theme by overriding a handful of tokens.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PALETTE ============ -->
+  <section class="block">
+    <div class="block-head"><span class="num">01</span><h2>Palette</h2>
+      <p>Airy and light by default. Greens and neutrals do the heavy lifting; clay and amber are accents.</p>
+    </div>
+    <div class="card-frame pad">
+      <div class="palette">
+        <div class="pal-group">
+          <h4>Agave green · brand</h4>
+          <div class="ramp">
+            <i style="background:var(--green-50)"></i><i style="background:var(--green-100)"></i>
+            <i style="background:var(--green-200)"></i><i style="background:var(--green-300)"></i>
+            <i style="background:var(--green-500)"></i><i style="background:var(--green-600)"></i>
+            <i style="background:var(--green-700)"></i><i style="background:var(--green-800)"></i>
+          </div>
+          <p class="pal-note"><b>600</b> for actions &amp; links, <b>800</b> for the footer.</p>
+        </div>
+        <div class="pal-group">
+          <h4>Clay · warm accent</h4>
+          <div class="ramp">
+            <i style="background:var(--clay-50)"></i><i style="background:var(--clay-100)"></i>
+            <i style="background:var(--clay-300)"></i><i style="background:var(--clay-500)"></i>
+            <i style="background:var(--clay-600)"></i><i style="background:var(--clay-700)"></i>
+          </div>
+          <p class="pal-note">The Mexican warmth. News markers, occasional CTAs.</p>
+        </div>
+        <div class="pal-group">
+          <h4>Amber · third note</h4>
+          <div class="ramp">
+            <i style="background:var(--amber-50)"></i><i style="background:var(--amber-100)"></i>
+            <i style="background:var(--amber-300)"></i><i style="background:var(--amber-500)"></i>
+            <i style="background:var(--amber-700)"></i>
+          </div>
+          <p class="pal-note">Reserved for Events, so they read at a glance.</p>
+        </div>
+        <div class="pal-group">
+          <h4>Neutrals · warm-tinted</h4>
+          <div class="ramp">
+            <i style="background:var(--paper)"></i><i style="background:var(--surface-2)"></i>
+            <i style="background:var(--line)"></i><i style="background:var(--faint)"></i>
+            <i style="background:var(--muted)"></i><i style="background:var(--ink-soft)"></i>
+            <i style="background:var(--ink)"></i>
+          </div>
+          <p class="pal-note">Off-whites are faintly green; text is a deep green-charcoal, not black.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TYPE ============ -->
+  <section class="block">
+    <div class="block-head"><span class="num">02</span><h2>Typography</h2>
+      <p>Hanken Grotesk — one humanist sans, full weight range. Friendly, modern, very legible.</p>
+    </div>
+    <div class="card-frame pad">
+      <div class="spec">
+        <div class="row"><span class="tagname">eyebrow</span><span class="eyebrow">News · 12 March 2026</span></div>
+        <div class="row"><span class="tagname">display</span><span class="t-display">Agave grows wild</span></div>
+        <div class="row"><span class="tagname">h1</span><span class="t-h1">Page &amp; article titles</span></div>
+        <div class="row"><span class="tagname">h2</span><span class="t-h2">A section heading</span></div>
+        <div class="row"><span class="tagname">h3</span><span class="t-h3">A smaller subhead</span></div>
+        <div class="row"><span class="tagname">lead</span><span class="t-lead">An introductory standfirst sets the scene in a softer, larger weight.</span></div>
+        <div class="row"><span class="tagname">body</span><span style="max-width:60ch">Body copy is set at 18px with generous line height for comfortable reading across long articles and rich text pages — the bulk of what a Plone site publishes.</span></div>
+        <div class="row"><span class="tagname">meta</span><span class="t-meta">Bylines, dates, captions and other supporting metadata.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMPONENTS ============ -->
+  <section class="block">
+    <div class="block-head"><span class="num">03</span><h2>Core components</h2>
+      <p>The reusable pieces every page is built from. Hover them — they behave.</p>
+    </div>
+    <div class="card-frame pad">
+      <div class="comp-grid">
+        <div class="comp">
+          <h4>Buttons</h4>
+          <div class="demo">
+            <a class="btn btn--primary" href="#">Read more</a>
+            <a class="btn btn--ghost" href="#">Secondary</a>
+            <a class="btn btn--clay" href="#">Register</a>
+          </div>
+        </div>
+        <div class="comp">
+          <h4>Content-type tags</h4>
+          <div class="demo">
+            <span class="tag tag--news"><span class="dot"></span>News</span>
+            <span class="tag tag--event"><span class="dot"></span>Event</span>
+            <span class="tag tag--page"><span class="dot"></span>Page</span>
+          </div>
+        </div>
+        <div class="comp">
+          <h4>Breadcrumbs</h4>
+          <div class="demo">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+              <a href="#">Home</a><span class="sep">/</span>
+              <a href="#">News</a><span class="sep">/</span>
+              <span aria-current="page">Agave wins an award</span>
+            </nav>
+          </div>
+        </div>
+        <div class="comp">
+          <h4>Search &amp; login</h4>
+          <div class="demo">
+            <form class="search" role="search" onsubmit="return false">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+              <input type="search" placeholder="Search…" aria-label="Search">
+            </form>
+            <a class="login" href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-5.5 7-5.5s7 1.9 7 5.5"/></svg>
+              Log in
+            </a>
+          </div>
+        </div>
+        <div class="comp">
+          <h4>Inline link</h4>
+          <div class="demo">
+            <a class="link-arrow" href="#">All news
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="comp">
+          <h4>Image placeholder</h4>
+          <div class="demo">
+            <div class="ph" style="width:100%;height:96px"><span>hero / 16:9 photo</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HEADER A ============ -->
+  <section class="block">
+    <div class="block-head"><span class="num">04</span><h2>Header — Direction A</h2>
+      <p>Single row: logo, centred navigation, search &amp; login to the right. Compact and modern.</p>
+    </div>
+    <div class="card-frame">
+      <div class="frame-label"><span class="browser-dots"><i></i><i></i><i></i></span>
+        Single-row header <span class="badge">.ah--single</span></div>
+      <div class="chrome-scroll">
+      <header class="ah ah--single">
+        <div class="ah__inner">
+          <a class="brand" href="#" aria-label="Agave home">
+            <svg class="brand__mark" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+              <g>
+                <polygon points="14,25 16,25 6,7"  fill="var(--green-300)"/>
+                <polygon points="14,25 16,25 23,6"  fill="var(--green-300)"/>
+                <polygon points="14,25 16,25 10,4"  fill="var(--green-500)"/>
+                <polygon points="14,25 16,25 20,4"  fill="var(--green-500)"/>
+                <polygon points="14,25 16,25 15,2"  fill="var(--green-600)"/>
+              </g>
+            </svg>
+            <span class="brand__word">ag<b>ave</b></span>
+          </a>
+          <nav class="mainnav" aria-label="Main">
+            <a href="#" aria-current="page">Home</a>
+            <a href="#">News</a>
+            <a href="#">Events</a>
+            <a href="#">About
+              <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="6 9 12 15 18 9"/></svg>
+            </a>
+            <a href="#">Contact</a>
+          </nav>
+          <div class="ah__tools">
+            <form class="search" role="search" onsubmit="return false">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+              <input type="search" placeholder="Search…" aria-label="Search">
+            </form>
+            <a class="login" href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-5.5 7-5.5s7 1.9 7 5.5"/></svg>
+              Log in
+            </a>
+          </div>
+        </div>
+      </header>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HEADER B ============ -->
+  <section class="block">
+    <div class="block-head"><span class="num">05</span><h2>Header — Direction B</h2>
+      <p>Two tiers: utility row (logo, search, login) over a dedicated navigation bar. More institutional,
+        and a natural home for dropdown menus.</p>
+    </div>
+    <div class="card-frame">
+      <div class="frame-label"><span class="browser-dots"><i></i><i></i><i></i></span>
+        Two-tier header <span class="badge">.ah--tiers</span></div>
+      <div class="chrome-scroll">
+      <header class="ah ah--tiers">
+        <div class="ah__utility">
+          <div class="ah__inner">
+            <a class="brand" href="#" aria-label="Agave home">
+              <svg class="brand__mark" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                <g>
+                  <polygon points="14,25 16,25 6,7"  fill="var(--green-300)"/>
+                  <polygon points="14,25 16,25 23,6"  fill="var(--green-300)"/>
+                  <polygon points="14,25 16,25 10,4"  fill="var(--green-500)"/>
+                  <polygon points="14,25 16,25 20,4"  fill="var(--green-500)"/>
+                  <polygon points="14,25 16,25 15,2"  fill="var(--green-600)"/>
+                </g>
+              </svg>
+              <span class="brand__word">ag<b>ave</b></span>
+            </a>
+            <div class="ah__tools">
+              <form class="search" role="search" onsubmit="return false">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+                <input type="search" placeholder="Search the site…" aria-label="Search">
+              </form>
+              <a class="login" href="#">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-5.5 7-5.5s7 1.9 7 5.5"/></svg>
+                Log in
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="ah__navrow">
+          <div class="ah__inner">
+            <nav class="mainnav" aria-label="Main">
+              <a href="#" aria-current="page">Home</a>
+              <a href="#">News</a>
+              <a href="#">Events</a>
+              <a href="#">Publications</a>
+              <a href="#">About
+                <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="6 9 12 15 18 9"/></svg>
+              </a>
+              <a href="#">Contact</a>
+            </nav>
+          </div>
+        </div>
+      </header>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <section class="block">
+    <div class="block-head"><span class="num">06</span><h2>Footer</h2>
+      <p>Logo &amp; tagline, repeated navigation, sample contact info, legal links and social. Deep agave green.</p>
+    </div>
+    <div class="card-frame">
+      <div class="frame-label"><span class="browser-dots"><i></i><i></i><i></i></span>
+        Site footer <span class="badge">.site-footer</span></div>
+      <footer class="site-footer">
+        <div class="ftr__top">
+          <div class="ftr__about">
+            <a class="brand" href="#" aria-label="Agave home">
+              <svg class="brand__mark" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                <g>
+                  <polygon points="14,25 16,25 6,7"  fill="var(--green-400)"/>
+                  <polygon points="14,25 16,25 23,6"  fill="var(--green-400)"/>
+                  <polygon points="14,25 16,25 10,4"  fill="var(--green-300)"/>
+                  <polygon points="14,25 16,25 20,4"  fill="var(--green-300)"/>
+                  <polygon points="14,25 16,25 15,2"  fill="#fff"/>
+                </g>
+              </svg>
+              <span class="brand__word">ag<b>ave</b></span>
+            </a>
+            <p class="ftr__tagline">An open, lightweight theme for Plone — light on its feet, easy to make
+              your own.</p>
+            <div class="social" aria-label="Social links">
+              <a href="#" title="Mastodon">Ma</a>
+              <a href="#" title="Bluesky">Bs</a>
+              <a href="#" title="LinkedIn">in</a>
+              <a href="#" title="YouTube">▶</a>
+            </div>
+          </div>
+          <div class="ftr__col">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">News</a></li>
+              <li><a href="#">Events</a></li>
+              <li><a href="#">Publications</a></li>
+              <li><a href="#">About</a></li>
+            </ul>
+          </div>
+          <div class="ftr__col">
+            <h4>Contact</h4>
+            <address class="ftr__addr">
+              Fundación Agave<br>
+              Av. Reforma 122, Piso 4<br>
+              06600 Ciudad de México<br>
+              <a href="mailto:hola@agave.org">hola@agave.org</a><br>
+              +52 55 1234 5678
+            </address>
+          </div>
+          <div class="ftr__col">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy policy</a></li>
+              <li><a href="#">Cookie settings</a></li>
+              <li><a href="#">Accessibility</a></li>
+              <li><a href="#">Terms of use</a></li>
+              <li><a href="#">Site map</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="ftr__bar">
+          <div class="ftr__bar-inner">
+            <span>© 2026 Fundación Agave. Powered by Plone.</span>
+            <span class="spacer"></span>
+            <div class="ftr__legal">
+              <a href="#">Español</a><a href="#">English</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <!-- ============ NEXT STEPS ============ -->
+  <div class="note">
+    <div class="n-mark">→</div>
+    <div>
+      <h3>Your call before I build the pages</h3>
+      <p>Next I'll build the three Plone content types — <b>News Item</b>, <b>Event</b> and a rich
+        <b>Text Page</b> — each with breadcrumbs, large hero imagery, and the shared header &amp; footer.
+        To proceed I need:</p>
+      <ol>
+        <li><b>Header direction</b> — A (single row) or B (two tiers)?</li>
+        <li>Anything to adjust in the palette, type, logo or footer first?</li>
+      </ol>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

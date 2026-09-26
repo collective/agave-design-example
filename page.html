@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About the Foundation — Agave</title>
+<link rel="stylesheet" href="agave.css">
+<script src="chrome.js" defer></script>
+</head>
+<body data-screen-label="Text Page">
+
+  <div data-agave-header data-nav="about"></div>
+
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <div class="container breadcrumb">
+      <a href="index.html">Home</a><span class="sep">/</span>
+      <a href="page.html">About</a><span class="sep">/</span>
+      <span aria-current="page">About the Foundation</span>
+    </div>
+  </nav>
+
+  <main>
+    <article>
+      <header class="article-head">
+        <div class="container container--narrow">
+          <span class="tag tag--page"><span class="dot"></span>Page</span>
+          <h1>About the Foundation</h1>
+          <p class="t-lead">We're a small non-profit supporting open, accessible publishing for cultural
+            and community organisations across the Spanish-speaking world.</p>
+        </div>
+        <figure class="hero-figure container">
+          <div class="ph"><span>hero photo · the team / building, 16:8</span></div>
+          <figcaption><b>Our home in Mexico City.</b> The foundation's studio in Colonia Roma.</figcaption>
+        </figure>
+      </header>
+
+      <div class="section">
+        <div class="container">
+          <div class="page-layout">
+
+            <div class="prose" style="margin:0">
+              <h2 id="intro">Who we are</h2>
+              <p>The Fundación Agave was founded on a simple belief: that good tools for publishing on the
+                web should be available to everyone, not just organisations with large budgets. We build,
+                maintain and teach open-source software — and we help others do the same.</p>
+              <p>Most of what we make is given away. The rest funds the work. We're deliberately small, and
+                we like it that way.</p>
+
+              <figure class="figure--wide">
+                <div class="ph"><span>photo · workshop in progress, wide</span></div>
+                <figcaption><b>A community workshop.</b> Participants build their first site together.</figcaption>
+              </figure>
+
+              <h2 id="mission">Our mission</h2>
+              <p>We exist to lower the barrier to publishing well. That means software that is
+                <a href="#">accessible by default</a>, documentation people can actually follow, and
+                training that meets people where they are.</p>
+
+              <div class="pullquote">
+                <p>“The web works best when the tools to shape it are open, generous and within reach.”</p>
+                <cite>— From our founding charter</cite>
+              </div>
+
+              <h2 id="work">How we work</h2>
+              <p>Our work falls into three broad areas, each feeding the others. Teaching surfaces real
+                problems; those problems shape what we build; and what we build becomes the next thing we
+                teach.</p>
+
+              <figure class="figure--duo">
+                <div class="ph"><span>photo · code</span></div>
+                <div class="ph"><span>photo · classroom</span></div>
+              </figure>
+
+              <table>
+                <thead>
+                  <tr><th>Programme</th><th>What it involves</th><th>Who it's for</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>Build</strong></td><td>Open-source tools &amp; themes</td><td>Everyone</td></tr>
+                  <tr><td><strong>Teach</strong></td><td>Workshops &amp; mentoring</td><td>Site builders</td></tr>
+                  <tr><td><strong>Support</strong></td><td>Grants &amp; hosting</td><td>Small non-profits</td></tr>
+                </tbody>
+              </table>
+
+              <h2 id="team">The team</h2>
+              <p>We're a handful of developers, designers and educators, supported by a wider circle of
+                volunteers and contributors. Between us we speak Spanish, English, Portuguese and a little
+                Nahuatl.</p>
+              <p>If you'd like to join that circle — as a contributor, a translator, or a mentor — we'd
+                love to hear from you.</p>
+
+              <div class="callout">
+                <h4>Get involved</h4>
+                <p>All of our projects are open to contributions. Find us on the community forum, or write
+                  to <a href="mailto:hola@agave.org">hola@agave.org</a>.</p>
+              </div>
+            </div>
+
+            <aside>
+              <nav class="toc" aria-label="On this page">
+                <h4>On this page</h4>
+                <ul>
+                  <li><a href="#intro" aria-current="true">Who we are</a></li>
+                  <li><a href="#mission">Our mission</a></li>
+                  <li><a href="#work">How we work</a></li>
+                  <li><a href="#team">The team</a></li>
+                </ul>
+              </nav>
+            </aside>
+
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <div data-agave-footer></div>
+
+  <div id="agave-tweaks"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="tweaks-app.jsx"></script>
+</body>
+</html>
